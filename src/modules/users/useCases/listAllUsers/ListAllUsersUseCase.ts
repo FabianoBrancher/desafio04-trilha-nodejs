@@ -9,7 +9,12 @@ class ListAllUsersUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   execute({ user_id }: IRequest): User[] {
-    // Complete aqui
+    const userExists = this.usersRepository.findById(user_id);
+    if (userExists) {
+      if (userExists.admin) {
+        return this.usersRepository.list();
+      } else throw new Error('Permission denied')
+    } throw new Error('User not found')
   }
 }
 
